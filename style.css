@@ -236,4 +236,87 @@ main p {
 .photo-grid.match-height {
   display: grid;
   grid-template-columns: 2fr 1fr;   /* left about two thirds, right about one third */
-  grid-template-rows: auto aut
+  grid-template-rows: auto auto;    /* row 1 = photos, row 2 = captions */
+  column-gap: 20px;
+  row-gap: 8px;
+}
+
+.photo-grid.match-height figure {
+  display: grid;
+  grid-template-rows: subgrid;      /* lets both photos and both captions line up */
+  grid-row: span 2;
+  margin: 0;
+}
+
+.photo-grid.match-height figcaption {
+  margin-top: 0;
+}
+
+/* The right photo fills whatever height the left photo sets */
+.img-fit {
+  position: relative;
+  overflow: hidden;
+}
+
+.img-fit img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;          /* change to "top" or "bottom" to shift the crop */
+}
+
+/* Test images (index page) */
+.gallery {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.gallery img {
+  flex: 1 1 300px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Phones: stack everything, no cropping */
+@media (max-width: 600px) {
+  .photo-grid {
+    flex-direction: column;
+  }
+
+  /* Without this, stacked photos get a height of 0 and never load */
+  .photo-grid figure,
+  .photo-grid > img {
+    flex: none;
+    width: 100%;
+  }
+
+  .photo-grid img {
+    height: auto;
+  }
+
+  .photo-grid.match-height {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+
+  .photo-grid.match-height figure {
+    display: block;                 /* drop subgrid when stacked */
+    grid-row: auto;
+  }
+
+  .photo-grid.match-height figcaption {
+    margin-top: 8px;
+  }
+
+  .img-fit {
+    position: static;
+  }
+
+  .img-fit img {
+    position: static;
+    height: auto;
+  }
+}
